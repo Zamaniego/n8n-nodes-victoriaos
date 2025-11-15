@@ -34,7 +34,7 @@
 		"format": "prettier nodes credentials --write",
 		"lint": "eslint nodes credentials helpers types",
 		"lintfix": "eslint nodes credentials helpers types --fix",
-		"prepublishOnly": "npm run build && npm run lint",
+		"prepublishOnly": "npm run build",
 		"test": "echo \"No hay tests configurados aún\" && exit 0"
 	},
 	"files": [

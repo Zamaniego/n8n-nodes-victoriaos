@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-victoriaos",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Nodos de n8n para integrar VictoriaOS - Gestión de tareas, webhooks y más",
 	"keywords": [
 		"n8n-community-node-package",
@@ -48,9 +48,8 @@
 			"dist/credentials/VictoriaOsApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/Tareas/Tareas.node.js",
-			"dist/nodes/Webhooks/Webhooks.node.js",
-			"dist/nodes/Usuario/Usuario.node.js"
+			"dist/nodes/VictoriaOs/VictoriaOs.node.js",
+			"dist/nodes/VictoriaOsTrigger/VictoriaOsTrigger.node.js"
 		]
 	},
 	"devDependencies": {

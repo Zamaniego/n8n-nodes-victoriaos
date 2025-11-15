@@ -26,15 +26,17 @@ export async function construirUrl(this: IExecuteFunctions, ruta: string): Promi
  * Construye parámetros de consulta (query string) desde un objeto
  */
 export function construirParametrosConsulta(parametros: IDataObject): string {
-	const params = new URLSearchParams() as any;
+	const params: Record<string, string> = {};
 
 	for (const [clave, valor] of Object.entries(parametros)) {
 		if (valor !== undefined && valor !== null && valor !== '') {
-			params.append(clave, String(valor));
+			params[clave] = String(valor);
 		}
 	}
 
-	const queryString = params.toString();
+	const queryString = Object.entries(params)
+		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+		.join('&');
 	return queryString ? `?${queryString}` : '';
 }
 

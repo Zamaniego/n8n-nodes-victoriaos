@@ -1,0 +1,68 @@
+{
+	"name": "n8n-nodes-victoriaos",
+	"version": "1.0.0",
+	"description": "Nodos de n8n para integrar VictoriaOS - Gestión de tareas, webhooks y más",
+	"keywords": [
+		"n8n-community-node-package",
+		"n8n",
+		"victoriaos",
+		"productividad",
+		"tareas",
+		"gestion",
+		"workflow",
+		"automatizacion"
+	],
+	"license": "MIT",
+	"homepage": "https://github.com/Zamaniego/n8n-nodes-victoriaos",
+	"author": {
+		"name": "VictoriaOS",
+		"email": "soporte@victoriaos.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Zamaniego/n8n-nodes-victoriaos.git"
+	},
+	"engines": {
+		"node": ">=18.10",
+		"pnpm": ">=9.1"
+	},
+	"packageManager": "pnpm@9.1.4",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc && gulp build:icons",
+		"dev": "tsc --watch",
+		"format": "prettier nodes credentials --write",
+		"lint": "eslint nodes credentials helpers types",
+		"lintfix": "eslint nodes credentials helpers types --fix",
+		"prepublishOnly": "npm run build && npm run lint",
+		"test": "echo \"No hay tests configurados aún\" && exit 0"
+	},
+	"files": [
+		"dist",
+		"credentials",
+		"nodes"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"credentials": [
+			"dist/credentials/VictoriaOsApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Tareas/Tareas.node.js",
+			"dist/nodes/Webhooks/Webhooks.node.js",
+			"dist/nodes/Usuario/Usuario.node.js"
+		]
+	},
+	"devDependencies": {
+		"@typescript-eslint/parser": "^7.15.0",
+		"eslint": "^8.56.0",
+		"eslint-plugin-n8n-nodes-base": "^1.16.1",
+		"gulp": "^4.0.2",
+		"n8n-workflow": "^1.47.0",
+		"prettier": "^3.3.2",
+		"typescript": "^5.5.3"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}

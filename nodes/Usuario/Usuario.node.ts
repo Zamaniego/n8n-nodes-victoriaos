@@ -97,9 +97,10 @@ export class Usuario implements INodeType {
 				returnData.push(...executionData);
 			} catch (error) {
 				if (this.continueOnFail()) {
+					const err = error as Error;
 					returnData.push({
 						json: {
-							error: error.message,
+							error: err.message,
 						},
 						pairedItem: { item: i },
 					});

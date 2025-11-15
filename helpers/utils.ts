@@ -3,8 +3,8 @@ import type { IExecuteFunctions, IDataObject } from 'n8n-workflow';
 /**
  * Obtiene la URL base de la API según el entorno configurado
  */
-export function obtenerUrlBase(this: IExecuteFunctions): string {
-	const credenciales = this.getCredentials('victoriaOsApi') as IDataObject;
+export async function obtenerUrlBase(this: IExecuteFunctions): Promise<string> {
+	const credenciales = await this.getCredentials('victoriaOsApi');
 	const entorno = credenciales.entorno as string;
 
 	return entorno === 'desarrollo'
@@ -15,8 +15,8 @@ export function obtenerUrlBase(this: IExecuteFunctions): string {
 /**
  * Construye la URL completa para un endpoint específico
  */
-export function construirUrl(this: IExecuteFunctions, ruta: string): string {
-	const urlBase = obtenerUrlBase.call(this);
+export async function construirUrl(this: IExecuteFunctions, ruta: string): Promise<string> {
+	const urlBase = await obtenerUrlBase.call(this);
 	// Asegurar que la ruta comienza con /
 	const rutaLimpia = ruta.startsWith('/') ? ruta : `/${ruta}`;
 	return `${urlBase}${rutaLimpia}`;
@@ -26,7 +26,7 @@ export function construirUrl(this: IExecuteFunctions, ruta: string): string {
  * Construye parámetros de consulta (query string) desde un objeto
  */
 export function construirParametrosConsulta(parametros: IDataObject): string {
-	const params = new URLSearchParams();
+	const params = new URLSearchParams() as any;
 
 	for (const [clave, valor] of Object.entries(parametros)) {
 		if (valor !== undefined && valor !== null && valor !== '') {
@@ -41,9 +41,10 @@ export function construirParametrosConsulta(parametros: IDataObject): string {
 /**
  * Maneja errores de la API y los formatea para n8n
  */
-export function manejarErrorApi(error: any): never {
-	if (error.response?.body?.error) {
-		const errorApi = error.response.body.error;
+export function manejarErrorApi(error: unknown): never {
+	const err = error as any;
+	if (err.response?.body?.error) {
+		const errorApi = err.response.body.error;
 		throw new Error(
 			`Error de VictoriaOS [${errorApi.code}]: ${errorApi.message}${
 				errorApi.details ? ` - Detalles: ${JSON.stringify(errorApi.details)}` : ''
@@ -51,8 +52,8 @@ export function manejarErrorApi(error: any): never {
 		);
 	}
 
-	if (error.message) {
-		throw new Error(`Error al comunicarse con VictoriaOS: ${error.message}`);
+	if (err.message) {
+		throw new Error(`Error al comunicarse con VictoriaOS: ${err.message}`);
 	}
 
 	throw new Error('Error desconocido al comunicarse con VictoriaOS');
@@ -95,7 +96,7 @@ export function formatearFecha(fecha: Date | string): string {
 /**
  * Extrae los encabezados de límite de velocidad de la respuesta
  */
-export function extraerLimitesVelocidad(encabezados: any): IDataObject {
+export function extraerLimitesVelocidad(encabezados: Record<string, string>): IDataObject {
 	return {
 		limite: encabezados['x-ratelimit-limit'],
 		restante: encabezados['x-ratelimit-remaining'],

@@ -8,7 +8,6 @@ import type {
 } from 'n8n-workflow';
 
 import {
-	construirUrl,
 	construirParametrosConsulta,
 	manejarErrorApi,
 	limpiarObjeto,
@@ -483,9 +482,10 @@ export class Tareas implements INodeType {
 				returnData.push(...executionData);
 			} catch (error) {
 				if (this.continueOnFail()) {
+					const err = error as Error;
 					returnData.push({
 						json: {
-							error: error.message,
+							error: err.message,
 						},
 						pairedItem: { item: i },
 					});
